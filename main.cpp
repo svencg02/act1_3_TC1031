@@ -1,8 +1,8 @@
 // =================================================================
 //
 // File: main.cpp
-// Author: Sergio Garnica González - A01704025, Sven Chávez García A01704151
-// Date:10/09/2022
+// Author: Sven Chavez Garcia
+// Date: 11/09/22
 //
 // =================================================================
 #include <iostream>
@@ -17,78 +17,58 @@
 #include <cstdlib>
 #include "insertion.h"
 
-int main(int argc, char *argv[])
-{
-  ifstream inputFile;
-  ofstream outputFile;
+int main(int argc, char* argv[]) {
+	std::ifstream entrada;
+	std::ofstream salida;
+	entrada.open(argv[1], std::ios::in);
+	salida.open(argv[2], std::ios::out);
 
-  if (argc != 3)
-  {
-    cout << "usage: " << argv[0] << " input_file output_file\n";
-    return -1;
-  }
+	if (argc != 3){
+		return -1;
+	}
 
-  inputFile.open(argv[1]);
-  outputFile.open(argv[2]);
+	else if (entrada.fail() || salida.fail()){
+		std::cout << "no se pudo abrir alguno de los textos...";
+		return -1;
+	}
 
-  if (!inputFile.is_open())
-  {
-    cout << argv[0] << ": File \"" << argv[1] << "\" not found\n";
-    return -1;
-  }
+	int n;
+	
+	std::string prefix;
 
-  int n;
-  std::string idSearch, date, hour, port, id;
+	entrada >> n;
+	entrada >> prefix;
 
-  // Ship struct
-  struct shipStruct
-  {
-    int year;
-    int month;
-    int day;
-    std::string dateString;
-    std::string hour;
-    std::string port;
-    std::string id;
-  };
-  // Ships vector
-  vector<shipStruct> ships;
+	struct barcos
+	{
+		std::string fecha_s, hora, puerto, clave;
+		int dia, mes, valor; 
+	};
 
-  // Read file
-  inputFile >> n;
-  inputFile >> idSearch;
+	std::vector <barcos> arr_barcos;
+	int cont = 0;
 
-  for (int i = 0; i < n; i++)
-  {
-    // Read file
-    inputFile >> date >> hour >> port >> id;
+	for (int i=0; i < n; i++){
+		barcos barco;
+		entrada >> barco.fecha_s >> barco.hora >> barco.puerto >> barco.clave;
+		
+		std::size_t found = barco.clave.rfind(prefix);
+		if (found != string::npos){
+			barco.dia = stoi(barco.fecha_s.substr(0, barco.fecha_s.find("-")));
+			barco.mes = stoi(barco.fecha_s.substr(3, barco.fecha_s.find("-")));
+			barco.valor = barco.mes * barco.dia;
+			arr_barcos[cont] = barco; 
+		}
+	};
 
-    // Parse date
-    std::string day = date.substr(0, date.find("-"));
-    std::string month = date.substr(3, date.find("-"));
-    std::string year = date.substr(6);
+	insertionSort(arr_barcos);
 
-    // Find ships with idSearch in id
-    std::size_t found = id.rfind(idSearch);
-    if (found != string::npos)
-    {
-      // Add ship to ships vector
-      ships.push_back({stoi(year), stoi(month), stoi(day), date, hour, port, id});
-    }
-  }
+	for (int i = 0; i < arr_barcos.size(); i++){
+		salida << arr_barcos[i].fecha_s << " " << arr_barcos[i].hora << " " << arr_barcos[i].puerto << " " << arr_barcos[i].clave << endl;
+	}
 
-  // Sort ships vector by day and then my month with insertion sort algorithm
-  insertionSortDay(ships);
-  insertionSortMonth(ships);
+	entrada.close();
+	salida.close();
 
-  // Write output file
-  for (int i = 0; i < ships.size(); i++)
-  {
-    outputFile << ships[i].dateString << " " << ships[i].hour << " " << ships[i].port << " " << ships[i].id << "\n";
-  }
-
-  inputFile.close();
-  outputFile.close();
-
-  return 0;
+	return 0;
 }
