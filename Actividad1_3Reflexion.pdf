@@ -1,9 +1,0 @@
-Los algoritmos de ordenamiento y búsqueda han sido de gran interés desde principios de la computación, representan una de las bases más importantes para el manejo de datos
-ya que gracias a que existen estos ha evolucionado la forma de procesamiento de los algoritmos actuales, permitiendo desarrollar mejores técnicas para su uso. 
-Los matemáticos han puesto su mayor esfuerzo por desarrollar los mismos y su complejidad ha permitido que las computadoras puedan mejorar la velocidad de ejecución 
-conforme pasan los años. 
-
-Es importante denotar que muchos de los algoritmos de busqueda y ordenamiento superior son de los más optimizados en cuando a O(n) se refiere. Sin embargo, la lógica
-detrás de los algoritmos es fundamental para las bases de optimización de código donde buscamos la mejor ejecicución particular para cada uno de nuestros programas 
-futuros, ya que hoy en día el tiempo es oro y es fundamental poder tener un pensamiento lógico computacional que a través de la reducción del tiempo de ejecución nuestros
-programas se vuelvan mucho más rápidos. 
